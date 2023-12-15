@@ -2,13 +2,18 @@
 #include <windows.h>
 #include <conio.h>
 
-
 void draw();
+
 void gotoxy(int x, int y);
+
 void goUp();
+
 void goDown();
+
 void goRight();
+
 void goLeft();
+
 void goStraight();
 
 
@@ -23,14 +28,14 @@ int main() {
     Sleep(100);
     system("cls");
     draw();
-    pos[0] = pos[0] +1;
+    pos[0] = pos[0] + 1;
     gotoxy(pos[0], pos[1]);
     std::cout << "o";
     Sleep(100);
-    while(true){
-        if (kbhit()){
+    while (true) {
+        if (kbhit()) {
             pressedKey = getch();
-        }else{
+        } else {
             pressedKey = lastPressed;
         }
         Sleep(10);
@@ -61,7 +66,7 @@ int main() {
     return 0;
 }
 
-void draw(){
+void draw() {
     for (int i = 0; i < 30; i++) {
         std::cout << "=";
     }
@@ -78,8 +83,7 @@ void draw(){
     }
 }
 
-void gotoxy(int x, int y)
-{
+void gotoxy(int x, int y) {
     COORD coord;
     coord.X = x;
     coord.Y = y;
