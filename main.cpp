@@ -23,7 +23,7 @@ void generateTarget();
 
 int SnakePos[2] = {15, 10};
 int TargetPosition[2];
-int score;
+int score = 0;
 char pressedKey, lastPressed = 'd';
 bool getTarget = false;
 
@@ -49,24 +49,41 @@ int main() {
         Sleep(10);
         switch (pressedKey) {
             case 'w':
+                if(lastPressed == 's'){
+                    break;
+                }
                 goUp();
                 lastPressed = 'w';
                 break;
             case 'd':
+                if(lastPressed == 'a'){
+                    break;
+                }
                 goRight();
                 lastPressed = 'd';
                 break;
             case 'a':
+                if(lastPressed == 'd'){
+                    break;
+                }
                 goLeft();
                 lastPressed = 'a';
                 break;
             case 's':
+                if(lastPressed == 'w'){
+                    break;
+                }
                 goDown();
                 lastPressed = 's';
                 break;
             default:
                 goStraight();
                 break;
+        }
+        if(SnakePos[0] == TargetPosition[0] && SnakePos[1] == TargetPosition[1]){
+            score++;
+            getTarget = false;
+            generateTarget();
         }
         if (SnakePos[0] >= 29 || SnakePos[0] <= 0 || SnakePos[1] >= 22 || SnakePos[1] <= 1) {
             died();
