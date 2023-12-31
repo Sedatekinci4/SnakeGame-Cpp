@@ -31,6 +31,8 @@ void generateTarget();
 
 void createTail();
 
+void ShowConsoleCursor(bool showFlag);
+
 int TargetPosition[2];
 int score = 0;
 char pressedKey, lastPressed = 'd';
@@ -42,6 +44,9 @@ Node* tail;
 Node* temp_node;
 
 int main() {
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole, 10);
+    ShowConsoleCursor(false);
     first_node.posx= 15;
     first_node.posy= 10;
     head = new Node();
@@ -52,13 +57,13 @@ int main() {
     gotoxy(first_node.posx, first_node.posy);
     std::cout << "o";
     getch();
-    Sleep(100);
+    Sleep(25);
     system("cls");
     draw();
     first_node.posx = first_node.posx + 1;
     gotoxy(first_node.posx, first_node.posy);
     std::cout << "o";
-    Sleep(100);
+    Sleep(25);
     while (true) {
         generateTarget();
         if (kbhit()) {
@@ -66,7 +71,7 @@ int main() {
         } else {
             pressedKey = lastPressed;
         }
-        Sleep(10);
+        Sleep(1);
         switch (pressedKey) {
             case 'w':
                 if(lastPressed == 's'){
@@ -276,7 +281,7 @@ void goLeft() {
 
 void goStraight() {
     std::cout << lastPressed << std::endl;
-    Sleep(10);
+    Sleep(5);
     switch (lastPressed) {
         case 'w':
             goUp();
@@ -314,10 +319,21 @@ void generateTarget() {
     if (TargetPosition[0] == 0)
         TargetPosition[0] = TargetPosition[0] + 2;
     srand((unsigned) time(nullptr));
-    TargetPosition[1] = rand() % 17;
-    if (TargetPosition[1] == 0)
+    TargetPosition[1] = rand() % 18;
+    if (TargetPosition[1] == 0 || TargetPosition[1] == 1)
         TargetPosition[1] = TargetPosition[1] + 2;
     gotoxy(TargetPosition[0], TargetPosition[1]);
     std::cout << "*";
     getTarget = true;
+}
+
+void ShowConsoleCursor(bool showFlag)
+{
+    HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
+
+    CONSOLE_CURSOR_INFO     cursorInfo;
+
+    GetConsoleCursorInfo(out, &cursorInfo);
+    cursorInfo.bVisible = showFlag; // set the cursor visibility
+    SetConsoleCursorInfo(out, &cursorInfo);
 }
