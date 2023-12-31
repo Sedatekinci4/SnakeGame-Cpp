@@ -3,6 +3,14 @@
 #include <conio.h>
 #include <ctime>
 
+// Creating a node
+class Node {
+public:
+    int posx;
+    int posy;
+    Node* next;
+};
+
 void draw();
 
 void gotoxy(int x, int y);
@@ -21,22 +29,35 @@ void died();
 
 void generateTarget();
 
-int SnakePos[2] = {15, 10};
+void createTail();
+
 int TargetPosition[2];
 int score = 0;
 char pressedKey, lastPressed = 'd';
 bool getTarget = false;
 
+Node first_node;
+Node second_node;
+Node* head;
+Node* temp_node;
+
 int main() {
+    second_node.posx= 15;
+    second_node.posy= 11;
+    first_node.posx= 15;
+    first_node.posy= 10;
+    first_node.next= &second_node;
+    head = new Node();
+    head->next = &first_node;
     draw();
-    gotoxy(SnakePos[0], SnakePos[1]);
+    gotoxy(first_node.posx, first_node.posy);
     std::cout << "o";
     getch();
     Sleep(100);
     system("cls");
     draw();
-    SnakePos[0] = SnakePos[0] + 1;
-    gotoxy(SnakePos[0], SnakePos[1]);
+    first_node.posx = first_node.posx + 1;
+    gotoxy(first_node.posx, first_node.posy);
     std::cout << "o";
     Sleep(100);
     while (true) {
@@ -80,17 +101,22 @@ int main() {
                 goStraight();
                 break;
         }
-        if(SnakePos[0] == TargetPosition[0] && SnakePos[1] == TargetPosition[1]){
+        if(first_node.posx == TargetPosition[0] && first_node.posy == TargetPosition[1]){
             score++;
             getTarget = false;
+            createTail();
             generateTarget();
         }
-        if (SnakePos[0] >= 29 || SnakePos[0] <= 0 || SnakePos[1] >= 22 || SnakePos[1] <= 1) {
+        if (first_node.posx >= 29 || first_node.posx <= 0 || first_node.posy >= 22 || first_node.posy <= 1) {
             died();
         }
     }
     Sleep(100);
     return 0;
+}
+
+void createTail() {
+
 }
 
 void draw() {
@@ -119,38 +145,106 @@ void gotoxy(int x, int y) {
 }
 
 void goUp() {
+    temp_node = new Node;
     system("cls");
     draw();
-    SnakePos[1] = SnakePos[1] - 1;
-    gotoxy(SnakePos[0], SnakePos[1]);
-    std::cout << "o";
-
+    head->posx = first_node.posx;
+    head->posy = first_node.posy;
+    first_node.posy = first_node.posy - 1;
+    while(head->next->next != nullptr){
+        head->next = head->next->next;
+        temp_node->posx = head->next->posx;
+        temp_node->posy = head->next->posy;
+        head->next->posx = head->posx;
+        head->next->posy = head->posy;
+        head->posx = temp_node->posx;
+        head->posy = temp_node->posy;
+    }
+    head->next = &first_node;
+    do{
+        gotoxy(head->next->posx, head->next->posy);
+        std::cout << "o";
+        head->next = head->next->next;
+    }while(head->next != nullptr);
+    head->next = &first_node;
+    lastPressed = 'w';
 }
 
 void goDown() {
+    temp_node = new Node;
     system("cls");
     draw();
-    SnakePos[1] = SnakePos[1] + 1;
-    gotoxy(SnakePos[0], SnakePos[1]);
-    std::cout << "o";
+    head->posx = first_node.posx;
+    head->posy = first_node.posy;
+    first_node.posy = first_node.posy + 1;
+    while(head->next->next != nullptr){
+        head->next = head->next->next;
+        temp_node->posx = head->next->posx;
+        temp_node->posy = head->next->posy;
+        head->next->posx = head->posx;
+        head->next->posy = head->posy;
+        head->posx = temp_node->posx;
+        head->posy = temp_node->posy;
+    }
+    head->next = &first_node;
+    do{
+        gotoxy(head->next->posx, head->next->posy);
+        std::cout << "o";
+        head->next = head->next->next;
+    }while(head->next != nullptr);
+    head->next = &first_node;
     lastPressed = 'a';
 }
 
 void goRight() {
+    temp_node = new Node;
     system("cls");
     draw();
-    SnakePos[0] = SnakePos[0] + 1;
-    gotoxy(SnakePos[0], SnakePos[1]);
-    std::cout << "o";
+    head->posx = first_node.posx;
+    head->posy = first_node.posy;
+    first_node.posx = first_node.posx + 1;
+    while(head->next->next != nullptr){
+        head->next = head->next->next;
+        temp_node->posx = head->next->posx;
+        temp_node->posy = head->next->posy;
+        head->next->posx = head->posx;
+        head->next->posy = head->posy;
+        head->posx = temp_node->posx;
+        head->posy = temp_node->posy;
+    }
+    head->next = &first_node;
+    do{
+        gotoxy(head->next->posx, head->next->posy);
+        std::cout << "o";
+        head->next = head->next->next;
+    }while(head->next != nullptr);
+    head->next = &first_node;
     lastPressed = 'd';
 }
 
 void goLeft() {
+    temp_node = new Node;
     system("cls");
     draw();
-    SnakePos[0] = SnakePos[0] - 1;
-    gotoxy(SnakePos[0], SnakePos[1]);
-    std::cout << "o";
+    head->posx = first_node.posx;
+    head->posy = first_node.posy;
+    first_node.posx = first_node.posx - 1;
+    while(head->next->next != nullptr){
+        head->next = head->next->next;
+        temp_node->posx = head->next->posx;
+        temp_node->posy = head->next->posy;
+        head->next->posx = head->posx;
+        head->next->posy = head->posy;
+        head->posx = temp_node->posx;
+        head->posy = temp_node->posy;
+    }
+    head->next = &first_node;
+    do{
+        gotoxy(head->next->posx, head->next->posy);
+        std::cout << "o";
+        head->next = head->next->next;
+    }while(head->next != nullptr);
+    head->next = &first_node;
     lastPressed = 'a';
 }
 
