@@ -35,6 +35,8 @@ void ShowConsoleCursor(bool showFlag);
 
 bool isCollideSelf();
 
+bool mainMenu();
+
 int TargetPosition[2];
 int score = 0;
 char pressedKey, lastPressed = 'd';
@@ -48,6 +50,8 @@ int main() {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, 10);
     ShowConsoleCursor(false);
+    mainMenu();
+    system("cls");
     first_node.posx = 15;
     first_node.posy = 10;
     first_node.next = nullptr;
@@ -354,4 +358,70 @@ bool isCollideSelf() {
     }
     head->next = &first_node;
     return false;
+}
+
+bool mainMenu() {
+    char menuPressedKey;
+    char choice;
+    int cursorPos[2] = {6, 13};
+    gotoxy(10,10);
+    std::cout << "WELCOME TO THE\n\t\tSNAKE GAME by SedatEkinci" <<std::endl;
+    gotoxy(10,13);
+    std::cout << "1-START THE GAME\n\n\t  2-SCORES\n\n\t  3-EXIT" <<std::endl;
+    gotoxy(cursorPos[0], cursorPos[1]);
+    std::cout << "-->";
+    while(true){
+        if (kbhit()) {
+            choice = getch();
+        } else {
+            choice = '0';
+        }
+        switch (choice) {
+            case 'x': // SELECT
+                if (cursorPos[1] == 13){
+                    return true;
+                }else if(cursorPos[1] == 15){
+                    gotoxy(1,1);
+                    std::cout << "HIGH SCORE TABLE!!" << std::endl;
+                    break;
+                }else{
+                    exit(3);
+                }
+                break;
+            case 's': // DOWN
+                if (cursorPos[1] > 16){
+                    break;
+                }
+                gotoxy(cursorPos[0], cursorPos[1]);
+                std::cout << "   ";
+                cursorPos[1] = cursorPos[1] + 2;
+                gotoxy(cursorPos[0], cursorPos[1]);
+                std::cout << "-->";
+                break;
+            case 'w': // UP
+                if (cursorPos[1] < 14){
+                    break;
+                }
+                gotoxy(cursorPos[0], cursorPos[1]);
+                std::cout << "   ";
+                cursorPos[1] = cursorPos[1] - 2;
+                gotoxy(cursorPos[0], cursorPos[1]);
+                std::cout << "-->";
+                break;
+            default:
+                break;
+        }
+    }
+    /*while (1)
+    {
+        if (kbhit()) {
+            menuPressedKey = getch();
+            gotoxy(1,1);
+            std::cout << menuPressedKey;
+        }
+        if(menuPressedKey == 'x'){
+            std::cout << "DOME";
+            return true;
+        }
+    }*/
 }
