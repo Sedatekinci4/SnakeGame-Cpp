@@ -33,14 +33,16 @@ void createTail();
 
 void ShowConsoleCursor(bool showFlag);
 
+bool isCollideSelf();
+
 int TargetPosition[2];
 int score = 0;
 char pressedKey, lastPressed = 'd';
 bool getTarget = false;
+bool isColide = false;
 
 Node first_node;
 Node* head;
-Node* tail;
 Node* temp_node;
 
 int main() {
@@ -49,10 +51,9 @@ int main() {
     ShowConsoleCursor(false);
     first_node.posx= 15;
     first_node.posy= 10;
+    first_node.next = nullptr;
     head = new Node();
     head->next = &first_node;
-    tail = new Node();
-    tail->next = &first_node;
     draw();
     gotoxy(first_node.posx, first_node.posy);
     std::cout << "o";
@@ -111,9 +112,13 @@ int main() {
             createTail();
             generateTarget();
         }
-        if (first_node.posx >= 29 || first_node.posx <= 0 || first_node.posy >= 22 || first_node.posy <= 1) {
+        if (first_node.posx >= 29 || first_node.posx <= 0 || first_node.posy >= 22 || first_node.posy <= 1 || isCollideSelf()) {
             died();
         }
+        /*isColide = isCollideSelf();
+        gotoxy(45,10);
+        std::cout<< isColide;*/
+
     }
     Sleep(100);
     return 0;
@@ -336,4 +341,15 @@ void ShowConsoleCursor(bool showFlag)
     GetConsoleCursorInfo(out, &cursorInfo);
     cursorInfo.bVisible = showFlag; // set the cursor visibility
     SetConsoleCursorInfo(out, &cursorInfo);
+}
+
+bool isCollideSelf() {
+    while(head->next->next != nullptr){
+        if(head->next->next->posx == first_node.posx && head->next->next->posy == first_node.posy){
+            return true;
+        }
+        head->next = head->next->next;
+    }
+    head->next = &first_node;
+    return false;
 }
