@@ -8,7 +8,7 @@ class Node {
 public:
     int posx;
     int posy;
-    Node* next;
+    Node *next;
 };
 
 void draw();
@@ -39,18 +39,17 @@ int TargetPosition[2];
 int score = 0;
 char pressedKey, lastPressed = 'd';
 bool getTarget = false;
-bool isColide = false;
 
 Node first_node;
-Node* head;
-Node* temp_node;
+Node *head;
+Node *temp_node;
 
 int main() {
     HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hConsole, 10);
     ShowConsoleCursor(false);
-    first_node.posx= 15;
-    first_node.posy= 10;
+    first_node.posx = 15;
+    first_node.posy = 10;
     first_node.next = nullptr;
     head = new Node();
     head->next = &first_node;
@@ -75,28 +74,28 @@ int main() {
         Sleep(1);
         switch (pressedKey) {
             case 'w':
-                if(lastPressed == 's'){
+                if (lastPressed == 's') {
                     break;
                 }
                 goUp();
                 lastPressed = 'w';
                 break;
             case 'd':
-                if(lastPressed == 'a'){
+                if (lastPressed == 'a') {
                     break;
                 }
                 goRight();
                 lastPressed = 'd';
                 break;
             case 'a':
-                if(lastPressed == 'd'){
+                if (lastPressed == 'd') {
                     break;
                 }
                 goLeft();
                 lastPressed = 'a';
                 break;
             case 's':
-                if(lastPressed == 'w'){
+                if (lastPressed == 'w') {
                     break;
                 }
                 goDown();
@@ -106,27 +105,24 @@ int main() {
                 goStraight();
                 break;
         }
-        if(first_node.posx == TargetPosition[0] && first_node.posy == TargetPosition[1]){
+        if (first_node.posx == TargetPosition[0] && first_node.posy == TargetPosition[1]) {
             score++;
             getTarget = false;
             createTail();
             generateTarget();
         }
-        if (first_node.posx >= 29 || first_node.posx <= 0 || first_node.posy >= 22 || first_node.posy <= 1 || isCollideSelf()) {
+        if (first_node.posx >= 29 || first_node.posx <= 0 || first_node.posy >= 22 || first_node.posy <= 1 ||
+            isCollideSelf()) {
             died();
         }
-        /*isColide = isCollideSelf();
-        gotoxy(45,10);
-        std::cout<< isColide;*/
-
     }
     Sleep(100);
     return 0;
 }
 
 void createTail() {
-    Node* added_node = new Node();
-    while(head->next->next != nullptr){
+    Node *added_node = new Node();
+    while (head->next->next != nullptr) {
         head->next = head->next->next;
     }
     switch (lastPressed) {
@@ -187,7 +183,7 @@ void goUp() {
     head->posx = first_node.posx;
     head->posy = first_node.posy;
     first_node.posy = first_node.posy - 1;
-    while(head->next->next != nullptr){
+    while (head->next->next != nullptr) {
         head->next = head->next->next;
         temp_node->posx = head->next->posx;
         temp_node->posy = head->next->posy;
@@ -197,11 +193,11 @@ void goUp() {
         head->posy = temp_node->posy;
     }
     head->next = &first_node;
-    do{
+    do {
         gotoxy(head->next->posx, head->next->posy);
         std::cout << "o";
         head->next = head->next->next;
-    }while(head->next != nullptr);
+    } while (head->next != nullptr);
     head->next = &first_node;
     lastPressed = 'w';
 }
@@ -213,7 +209,7 @@ void goDown() {
     head->posx = first_node.posx;
     head->posy = first_node.posy;
     first_node.posy = first_node.posy + 1;
-    while(head->next->next != nullptr){
+    while (head->next->next != nullptr) {
         head->next = head->next->next;
         temp_node->posx = head->next->posx;
         temp_node->posy = head->next->posy;
@@ -223,11 +219,11 @@ void goDown() {
         head->posy = temp_node->posy;
     }
     head->next = &first_node;
-    do{
+    do {
         gotoxy(head->next->posx, head->next->posy);
         std::cout << "o";
         head->next = head->next->next;
-    }while(head->next != nullptr);
+    } while (head->next != nullptr);
     head->next = &first_node;
     lastPressed = 'a';
 }
@@ -239,7 +235,7 @@ void goRight() {
     head->posx = first_node.posx;
     head->posy = first_node.posy;
     first_node.posx = first_node.posx + 1;
-    while(head->next->next != nullptr){
+    while (head->next->next != nullptr) {
         head->next = head->next->next;
         temp_node->posx = head->next->posx;
         temp_node->posy = head->next->posy;
@@ -249,11 +245,11 @@ void goRight() {
         head->posy = temp_node->posy;
     }
     head->next = &first_node;
-    do{
+    do {
         gotoxy(head->next->posx, head->next->posy);
         std::cout << "o";
         head->next = head->next->next;
-    }while(head->next != nullptr);
+    } while (head->next != nullptr);
     head->next = &first_node;
     lastPressed = 'd';
 }
@@ -265,7 +261,7 @@ void goLeft() {
     head->posx = first_node.posx;
     head->posy = first_node.posy;
     first_node.posx = first_node.posx - 1;
-    while(head->next->next != nullptr){
+    while (head->next->next != nullptr) {
         head->next = head->next->next;
         temp_node->posx = head->next->posx;
         temp_node->posy = head->next->posy;
@@ -275,11 +271,11 @@ void goLeft() {
         head->posy = temp_node->posy;
     }
     head->next = &first_node;
-    do{
+    do {
         gotoxy(head->next->posx, head->next->posy);
         std::cout << "o";
         head->next = head->next->next;
-    }while(head->next != nullptr);
+    } while (head->next != nullptr);
     head->next = &first_node;
     lastPressed = 'a';
 }
@@ -327,16 +323,22 @@ void generateTarget() {
     TargetPosition[1] = rand() % 18;
     if (TargetPosition[1] == 0 || TargetPosition[1] == 1)
         TargetPosition[1] = TargetPosition[1] + 2;
+    while (head->next->next != nullptr) {
+        if (head->next->posx == TargetPosition[0] && head->next->posy == TargetPosition[1] ){
+            generateTarget();
+        }
+        head->next = head->next->next;
+    }
+    head->next = &first_node;
     gotoxy(TargetPosition[0], TargetPosition[1]);
     std::cout << "*";
     getTarget = true;
 }
 
-void ShowConsoleCursor(bool showFlag)
-{
+void ShowConsoleCursor(bool showFlag) {
     HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
 
-    CONSOLE_CURSOR_INFO     cursorInfo;
+    CONSOLE_CURSOR_INFO cursorInfo;
 
     GetConsoleCursorInfo(out, &cursorInfo);
     cursorInfo.bVisible = showFlag; // set the cursor visibility
@@ -344,8 +346,8 @@ void ShowConsoleCursor(bool showFlag)
 }
 
 bool isCollideSelf() {
-    while(head->next->next != nullptr){
-        if(head->next->next->posx == first_node.posx && head->next->next->posy == first_node.posy){
+    while (head->next->next != nullptr) {
+        if (head->next->next->posx == first_node.posx && head->next->next->posy == first_node.posy) {
             return true;
         }
         head->next = head->next->next;
